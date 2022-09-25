@@ -4,8 +4,10 @@ import axios from 'axios';
 import Loader from 'components/Loader/Loader.jsx'
 // import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
 import ImageGallery from 'components/ImageGallery/ImageGallery.jsx';
-import Searchbar from 'components/Searchbar/Searchbar.jsx'
-import css from 'components/styles.css';
+import Searchbar from 'components/Searchbar/Searchbar.jsx'; 
+import Button from 'components/Button/Button.jsx';
+import Modal from 'components/Modal/Modal.jsx';
+import css from 'components/styles.module.css';
 
 
 
@@ -16,40 +18,35 @@ export class App extends Component {
     page: 1,
     loading: false,
     error: null,
-    searchName: ''
+    searchName: '',
+    showModal: false,
   }
 
-  // componentDidMount() {
-  //     this.fetchPictures()
-  // }
+  componentDidMount() {
+  
+    const { searchName } = this.state;
+    console.log(searchName);
+      if (searchName !== '') {
+      this.fetchPictures();
+    }
+  }
 
-   componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
-    console.log('prevProps', prevProps);
-    console.log('prevState', prevState);
-     const { searchName, page } = this.state;
-     console.log('prevState.searchName', prevState.searchName);
-        if (prevState.searchName !== searchName) {
-          console.log('New pictury');
-          console.log('newsearch', searchName);
-          console.log('prevState.searchName', prevState.searchName);
-    
-            this.fetchPictures();
+  componentDidUpdate(prevProps, prevState) {
+    const { searchName, page } = this.state;
+    if (prevState.searchName !== searchName || prevState.page !== page) {
+         this.fetchPictures();
         }
     }
   
   fetchPictures() {
     const { page, searchName } = this.state;
-    this.setState({
+      this.setState({
       loading: true,
     });
   
     axios.get(`https://pixabay.com/api/?key=29134253-bbfb6b627ddeed17a742fb71a&image_type=photo&orientation=horizontal&page=${page}&per_page=12&q=${searchName}`)
       .then(({ data }) => {
-        console.log(data)
-        console.log(Object.values(data.hits))
         const newPicturies = Object.values(data.hits);
-        // console.log(this.state.picturies);
         this.setState(({ picturies }) => {
           return {
             picturies: [...picturies, ...newPicturies]
@@ -58,17 +55,16 @@ export class App extends Component {
         })
         
   })
-
-  
+      
       .catch(error => {
         this.setState({
         error
       })
     })
-    .finally(() => this.setState({loading: false}))
-    
-    
+      
+      .finally(() => this.setState({ loading: false }))
   }
+
  onSearch = searchName => {
         this.setState({
             searchName,
@@ -82,22 +78,50 @@ export class App extends Component {
         page: page + 1
       }
     })
-  
   }
-  
+
+  // openModal = () => {
+  //   this.setState((showModal) => ({
+  //     showModal: !this.state.showModal,
+    
+  //   }))
+  // }
+
+      openModal = () => {
+        this.setState({
+           showModal: true,
+           
+        })
+    }
+
+    closeModal = () => {
+        this.setState({
+            showModal: false,
+           
+        })
+    }
+
   render() {
-    const { picturies, loading, error } = this.state;
-    const { onSearch, loadMore } = this;
+    const { picturies, loading, error, showModal } = this.state;
+    const { onSearch, loadMore, openModal, closeModal } = this;
     const isPictury = Boolean(picturies.length);
     console.log('pictury', picturies);
     console.log('loading', loading);
     return (
       <div className={css.App}>
+        <button className={css.Button} onClick={openModal} type='button'>openModal</button>
+        {showModal && <Modal onClose={closeModal}>
+          <p> asdfghjkl
+            sdfghjkl;
+            sdfghjkl
+          </p>
+          {/* <button className={css.Button} onClick={closeModal} type='button'>close</button> */}
+        </Modal>}
         <Searchbar onSubmit={onSearch} />
         {loading && <Loader />}
         {error && <p>Будь ласка спробуйте ще раз...</p>}
-        {isPictury && <ImageGallery items={picturies} />}
-        {isPictury && <button className={css.Button} type='button' onClick={loadMore}>Load more</button>}
+        {isPictury && <ImageGallery items={picturies} openModal={openModal} />}
+        {isPictury && <Button loadMore={loadMore} text='Load more' />}
       </div>
     );
   };

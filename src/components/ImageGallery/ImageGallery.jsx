@@ -1,24 +1,27 @@
-import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
+// import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
 import css from 'components/ImageGallery/ImageGallery.module.css';
 
-export default function ImageGallery({ items, children }) {
-  
-         <ul className={css.ImageGallery}>
-             {items.map((item, id) => {
-               
-                <ImageGalleryItem key={id} {...item} />
-             })}
-             {children}
-         </ul>
-    
-    return console.log(items)
-    }
+function ImageGallery({ items, loadMore, openModal }) {
+    const elements = items.map(({ id, largeImageURL, webformatURL }) => {
+        return <li className={css.ImageGalleryItem} key={id} onClick={openModal} >
+                     <a href={largeImageURL} >
+                         <img className={css.ImageGalleryItem_image} src={webformatURL} alt='this' />
+                     </a>
+                 </li>
+    })
+ 
+    return (
+        <>
+        <ul className={css.ImageGallery}>{elements}</ul>
+        </>
+            )
+        }
 
-
-
-// export default ImageGallery;
+export default ImageGallery;
 
 
 ImageGallery.defaultProps = {
     items: []
 }
+
+// onClick={() => openModal({largeImageURL})} 
