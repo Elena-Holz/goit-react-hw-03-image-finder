@@ -1,23 +1,22 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
 import css from 'components/ImageGallery/ImageGallery.module.css';
 
-function ImageGallery({ items, children }) {
-      
+export default function ImageGallery({ items, children }) {
   
-    return (
-        <>
-          <ul className={css.ImageGallery}>
-              <ImageGalleryItem items={items} />
-          {children}  
-            </ul>
-        </>
-        )
-
+         <ul className={css.ImageGallery}>
+             {items.map((item, id) => {
+               
+                <ImageGalleryItem key={id} {...item} />
+             })}
+             {children}
+         </ul>
+    
+    return console.log(items)
     }
 
 
 
-export default ImageGallery;
+// export default ImageGallery;
 
 
 ImageGallery.defaultProps = {
