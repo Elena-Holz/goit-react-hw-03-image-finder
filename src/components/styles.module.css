@@ -100,6 +100,7 @@ img {
   white-space: nowrap;
   clip-path: inset(50%);
   border: 0;
+  font-size: 18px;
 }
 
 .SearchForm-input {

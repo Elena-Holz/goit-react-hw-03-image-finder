@@ -1,11 +1,11 @@
 // import css from 'components/ImageGalleryItem/ImageGalleryItem.module.css';
 
-// function ImageGalleryItem({ id, webformatURL, largeImageURL}) {
+// function ImageGalleryItem({ picturies }) {
 
-//         return <li className={css.ImageGalleryItem} key={id}>
-//             <a href={largeImageURL}>
-//           <img className={css.ImageGalleryItem_image} src={webformatURL} alt='this' />
-//            </a>
+//         return <li className={css.ImageGalleryItem} key={picturies.id}>
+           
+//         <img className={css.ImageGalleryItem_image} src={picturies.webformatURL} alt={picturies.largeImageURL} />
+
 //       </li>
 //    };
     

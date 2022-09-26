@@ -22,13 +22,13 @@ export default class Modal extends Component {
 
   render() {
     const { closeModal } = this;
-    const { children } = this.props;
+    const { picturies } = this.props;
       return createPortal(
           
             <div className={css.overlay} onClick={closeModal}>
-              <div className={css.modal}> 
-                  {/* <img  alt="this" /> */}
-            {children}
+              <div  className={css.modal}> 
+                 
+            <img src={picturies.largeImageURL} key={picturies.id}  alt='picturies.largeImageURL' />
               </div>
           </div>,
           modalRoot, 

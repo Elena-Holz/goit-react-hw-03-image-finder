@@ -110,12 +110,8 @@ export class App extends Component {
     return (
       <div className={css.App}>
         <button className={css.Button} onClick={openModal} type='button'>openModal</button>
-        {showModal && <Modal onClose={closeModal}>
-          <p> asdfghjkl
-            sdfghjkl;
-            sdfghjkl
-          </p>
-          {/* <button className={css.Button} onClick={closeModal} type='button'>close</button> */}
+        {showModal && <Modal picturies={picturies}  onClose={closeModal}>
+          
         </Modal>}
         <Searchbar onSubmit={onSearch} />
         {loading && <Loader />}

@@ -2,11 +2,13 @@
 import css from 'components/ImageGallery/ImageGallery.module.css';
 
 function ImageGallery({ items, loadMore, openModal }) {
+    // const id = Object.values(items)
+   console.log(items[0].largeImageURL);
     const elements = items.map(({ id, largeImageURL, webformatURL }) => {
-        return <li className={css.ImageGalleryItem} key={id} onClick={openModal} >
-                     <a href={largeImageURL} >
-                         <img className={css.ImageGalleryItem_image} src={webformatURL} alt='this' />
-                     </a>
+        return <li className={css.ImageGalleryItem} key={id} onClick={() => openModal({largeImageURL})} >
+                   
+                         <img className={css.ImageGalleryItem_image} src={webformatURL} alt={largeImageURL} />
+                     
                  </li>
     })
  
@@ -17,11 +19,11 @@ function ImageGallery({ items, loadMore, openModal }) {
             )
         }
 
+
+
 export default ImageGallery;
 
 
 ImageGallery.defaultProps = {
     items: []
 }
-
-// onClick={() => openModal({largeImageURL})} 
