@@ -20,6 +20,7 @@ export class App extends Component {
     error: null,
     searchName: '',
     showModal: false,
+    largeImageURL: '',
   }
 
   componentDidMount() {
@@ -80,38 +81,41 @@ export class App extends Component {
     })
   }
 
-  // openModal = () => {
-  //   this.setState((showModal) => ({
-  //     showModal: !this.state.showModal,
-    
-  //   }))
-  // }
+  openModal = (largeImageURL) => {
+    this.setState(({showModal}) => ({
+      showModal: !this.state.showModal,
+      largeImageURL
+      
+    }))
+     
+  }
 
-      openModal = () => {
-        this.setState({
-           showModal: true,
+    //   openModal = () => {
+    //     this.setState((showModal, largeImageURL) => ({
+    //        showModal: true,
+    //   largeImageURL: largeImageURL
            
-        })
-    }
+    //     }))
+    // }
 
     closeModal = () => {
         this.setState({
-            showModal: false,
+          showModal: false,
+          largeImageURL: '',
            
         })
     }
 
   render() {
-    const { picturies, loading, error, showModal } = this.state;
+    const { picturies, loading, error, showModal,  largeImageURL } = this.state;
     const { onSearch, loadMore, openModal, closeModal } = this;
     const isPictury = Boolean(picturies.length);
-    console.log('pictury', picturies);
-    console.log('loading', loading);
+   
+    console.log('largeImage', largeImageURL.largeImageURL);
     return (
       <div className={css.App}>
-        <button className={css.Button} onClick={openModal} type='button'>openModal</button>
-        {showModal && <Modal picturies={picturies}  onClose={closeModal}>
-          
+        {showModal && <Modal  onClose={closeModal}>
+          <img src={largeImageURL.largeImageURL} alt='' />
         </Modal>}
         <Searchbar onSubmit={onSearch} />
         {loading && <Loader />}

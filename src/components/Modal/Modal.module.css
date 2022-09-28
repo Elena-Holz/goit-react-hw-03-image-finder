@@ -12,11 +12,9 @@
 }
 
 .modal {
-    /* max-width: calc(100vw - 48px);
-    max-height: calc(100vh - 24px); */
-    max-width: 300px;
-        max-height: 300px;
-        background-color: antiquewhite;
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 24px);
+   
 }
 
 .close {

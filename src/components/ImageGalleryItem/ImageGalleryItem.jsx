@@ -1,19 +1,16 @@
 // import css from 'components/ImageGalleryItem/ImageGalleryItem.module.css';
 
-// function ImageGalleryItem({ picturies }) {
-
-//         return <li className={css.ImageGalleryItem} key={picturies.id}>
+// function ImageGalleryItem() {
+// const { id, largeImageURL, webformatURL} = this.props
+//         return <li className={css.ImageGalleryItem} key={id}>
            
-//         <img className={css.ImageGalleryItem_image} src={picturies.webformatURL} alt={picturies.largeImageURL} />
+//             <img className={css.ImageGalleryItem_image} src={webformatURL} alt={largeImageURL} />
 
 //       </li>
 //    };
     
     
-//     return (
-//         <ul className={css.ImageGallery}>{element}</ul>
-//    )
-
+   
 
 
 // export default ImageGalleryItem;
