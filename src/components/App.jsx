@@ -2,7 +2,6 @@
 import { Component } from "react";
 import axios from 'axios';
 import Loader from 'components/Loader/Loader.jsx'
-// import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
 import ImageGallery from 'components/ImageGallery/ImageGallery.jsx';
 import Searchbar from 'components/Searchbar/Searchbar.jsx'; 
 import Button from 'components/Button/Button.jsx';
@@ -26,7 +25,6 @@ export class App extends Component {
   componentDidMount() {
   
     const { searchName } = this.state;
-    console.log(searchName);
       if (searchName !== '') {
       this.fetchPictures();
     }
@@ -70,7 +68,6 @@ export class App extends Component {
         this.setState({
             searchName,
         })
-   console.log('search', searchName);
     }
 
   loadMore = (page) => {
@@ -90,14 +87,6 @@ export class App extends Component {
      
   }
 
-    //   openModal = () => {
-    //     this.setState((showModal, largeImageURL) => ({
-    //        showModal: true,
-    //   largeImageURL: largeImageURL
-           
-    //     }))
-    // }
-
     closeModal = () => {
         this.setState({
           showModal: false,
@@ -110,8 +99,7 @@ export class App extends Component {
     const { picturies, loading, error, showModal,  largeImageURL } = this.state;
     const { onSearch, loadMore, openModal, closeModal } = this;
     const isPictury = Boolean(picturies.length);
-   
-    console.log('largeImage', largeImageURL.largeImageURL);
+
     return (
       <div className={css.App}>
         {showModal && <Modal  onClose={closeModal}>
@@ -120,7 +108,7 @@ export class App extends Component {
         <Searchbar onSubmit={onSearch} />
         {loading && <Loader />}
         {error && <p>Будь ласка спробуйте ще раз...</p>}
-        {isPictury && <ImageGallery items={picturies} openModal={openModal} />}
+        {isPictury && <ImageGallery picturies={picturies} openModal={openModal} />}
         {isPictury && <Button loadMore={loadMore} text='Load more' />}
       </div>
     );

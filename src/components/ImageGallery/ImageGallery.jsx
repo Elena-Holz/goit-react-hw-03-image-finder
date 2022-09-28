@@ -1,22 +1,20 @@
-// import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
+import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
 import css from 'components/ImageGallery/ImageGallery.module.css';
+import PropTypes from 'prop-types';
 
-
-function ImageGallery({ items, loadMore, openModal }) {
-    // const id = Object.values(items)
-   console.log(items[0].largeImageURL);
-    const elements = items.map(({ id, largeImageURL, webformatURL }) => {
-    return <li className={css.ImageGalleryItem} key={id} onClick={() => openModal({largeImageURL})}>
-                   
-                <img className={css.ImageGalleryItem_image}  alt='' />
-                     
-            </li>
+function ImageGallery({ picturies, openModal }) {
+ const elements = picturies.map(({ id, largeImageURL, webformatURL }) => {
+         return <ImageGalleryItem
+              key={id}
+              largeImageURL={largeImageURL}
+              webformatURL={webformatURL}
+              openModal={openModal}
+            />
     })
- 
     return (
         <ul className={css.ImageGallery}>{elements}</ul>
-            )
-        }
+    )
+}
 
 export default ImageGallery;
 
@@ -26,18 +24,13 @@ ImageGallery.defaultProps = {
 }
 
 
-// function ImageGallery() {
-//   const { children } = this.props;
-//     return(
-//         <ul className={css.ImageGallery}>{children}</ul>
-//     )
-// }
-
-
-
-// export default ImageGallery;
-
-
-// ImageGallery.defaultProps = {
-//     items: []
-// }
+ImageGallery.propTypes = {
+    openModal: PropTypes.func,
+    picturies: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            largeImageURL: PropTypes.string.isRequired,
+            webformatURL: PropTypes.string.isRequired,
+        })
+    )
+}

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { createPortal } from "react-dom"
 import css from 'components/Modal/Modal.module.css';
+import PropTypes from 'prop-types';
 
 const modalRoot = document.getElementById("modal-root");
 
@@ -24,7 +25,6 @@ export default class Modal extends Component {
     const { closeModal } = this;
     const { children } = this.props;
       return createPortal(
-          
             <div className={css.overlay} onClick={closeModal}>
               <div  className={css.modal}> 
                   {children}
@@ -37,4 +37,6 @@ export default class Modal extends Component {
 }
 
 
-
+Modal.propTypes = {
+    closeModal: PropTypes.func
+}

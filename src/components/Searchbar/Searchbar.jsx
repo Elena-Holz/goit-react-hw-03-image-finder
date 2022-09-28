@@ -1,5 +1,6 @@
 import { Component } from "react";
 import css from 'components/Searchbar/Searchbar.module.css';
+import PropTypes from 'prop-types';
 
 
 export default class Searchbar extends Component {
@@ -7,10 +8,8 @@ export default class Searchbar extends Component {
         searchName: ''
     };
 
-
 handleChange = (e) => {
     this.setState({ searchName: e.currentTarget.value.toLowerCase() })
-   
     }
 
     handleSubmit = (e) => {
@@ -19,8 +18,6 @@ handleChange = (e) => {
             alert('Enter request name')
             return;
         }
-        // const { onSubmit } = this.props;
-        // onSubmit({ ...this.state });
         this.props.onSubmit(this.state.searchName)
         this.reset();
     }
@@ -54,4 +51,10 @@ render() {
         
     )
 }
+}
+
+Searchbar.propTypes = {
+    searchName: PropTypes.string,
+    handleSubmit: PropTypes.func,
+    handleChange: PropTypes.func,
 }

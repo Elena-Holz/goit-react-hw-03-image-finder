@@ -1,4 +1,5 @@
 import css from 'components/Button/Button.module.css'
+import PropTypes from 'prop-types';
 
  function Button({ text, loadMore }) {
   return (
@@ -8,3 +9,8 @@ import css from 'components/Button/Button.module.css'
 
 
 export default Button
+
+Button.propTypes = {
+    text: PropTypes.string.isRequired,
+    loadMore: PropTypes.func.isRequired,
+}
