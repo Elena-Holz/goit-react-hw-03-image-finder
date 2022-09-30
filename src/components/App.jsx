@@ -1,13 +1,13 @@
 // import { toHaveErrorMessage } from "@testing-library/jest-dom/dist/matchers";
 import { Component } from "react";
-import axios from 'axios';
+// import axios from 'axios';
 import Loader from 'components/Loader/Loader.jsx'
 import ImageGallery from 'components/ImageGallery/ImageGallery.jsx';
 import Searchbar from 'components/Searchbar/Searchbar.jsx'; 
 import Button from 'components/Button/Button.jsx';
 import Modal from 'components/Modal/Modal.jsx';
+import { getPictures } from 'components/services/api'
 import css from 'components/styles.module.css';
-
 
 
 export class App extends Component {
@@ -19,98 +19,88 @@ export class App extends Component {
     error: null,
     searchName: '',
     showModal: false,
+   totalHits: '',
     largeImageURL: '',
   }
 
-  componentDidMount() {
-  
-    const { searchName } = this.state;
-      if (searchName !== '') {
-      this.fetchPictures();
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     const { searchName, page } = this.state;
     if (prevState.searchName !== searchName || prevState.page !== page) {
-         this.fetchPictures();
-        }
-    }
-  
-  fetchPictures() {
-    const { page, searchName } = this.state;
       this.setState({
-      loading: true,
-    });
-  
-    axios.get(`https://pixabay.com/api/?key=29134253-bbfb6b627ddeed17a742fb71a&image_type=photo&orientation=horizontal&page=${page}&per_page=12&q=${searchName}`)
-      .then(({ data }) => {
-        const newPicturies = Object.values(data.hits);
+        loading: true,
+        picturies: [],
+      });
+    
+      try {
+     
+        const data = await getPictures(page, searchName)
+        const newPicturies = data.hits;
+        const totalHits = data.totalHits;
         this.setState(({ picturies }) => {
           return {
-            picturies: [...picturies, ...newPicturies]
-            
+            picturies: [...picturies, ...newPicturies],
+            totalHits
           }
         })
-        
-  })
-      
-      .catch(error => {
-        this.setState({
-        error
-      })
-    })
-      
-      .finally(() => this.setState({ loading: false }))
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
   }
-
- onSearch = searchName => {
-        this.setState({
-            searchName,
-        })
+ 
+    onSearch = searchName => {
+      this.setState({
+        searchName,
+      })
     }
 
-  loadMore = (page) => {
-    this.setState(({ page }) => {
-      return {
-        page: page + 1
-      }
-    })
-  }
+    loadMore = (page) => {
+      this.setState(({ page }) => {
+        return {
+          page: page + 1
+        }
+      })
+    }
 
-  openModal = (largeImageURL) => {
-    this.setState(({showModal}) => ({
-      showModal: !this.state.showModal,
-      largeImageURL
+    openModal = (largeImageURL) => {
+      this.setState(({ showModal }) => ({
+        showModal: !this.state.showModal,
+        largeImageURL
       
-    }))
+      }))
      
-  }
+    }
 
     closeModal = () => {
-        this.setState({
-          showModal: false,
-          largeImageURL: '',
+      this.setState({
+        showModal: false,
+        largeImageURL: '',
            
-        })
+      })
     }
 
-  render() {
-    const { picturies, loading, error, showModal,  largeImageURL } = this.state;
-    const { onSearch, loadMore, openModal, closeModal } = this;
-    const isPictury = Boolean(picturies.length);
-
-    return (
-      <div className={css.App}>
-        {showModal && <Modal  onClose={closeModal}>
-          <img src={largeImageURL.largeImageURL} alt='' />
-        </Modal>}
-        <Searchbar onSubmit={onSearch} />
-        {loading && <Loader />}
-        {error && <p>Будь ласка спробуйте ще раз...</p>}
-        {isPictury && <ImageGallery picturies={picturies} openModal={openModal} />}
-        {isPictury && <Button loadMore={loadMore} text='Load more' />}
-      </div>
-    );
+    render() {
+ 
+      const { picturies, loading, error, showModal, largeImageURL,totalHits, page } = this.state;
+      const { onSearch, loadMore, openModal, closeModal } = this;
+      const isPictury = Boolean(picturies.length);
+      const totalPage = Math.ceil(totalHits / 12);
+ 
+      return (
+        <div className={css.App}>
+          {showModal && <Modal onClose={closeModal}>
+            <img src={largeImageURL.largeImageURL} alt='' />
+          </Modal>}
+          <Searchbar onSubmit={onSearch} />
+          {loading && <Loader />}
+          {error && <p>Будь ласка спробуйте ще раз...</p>}
+          {isPictury && <ImageGallery picturies={picturies} openModal={openModal} />}
+           {isPictury && totalPage !== page && <Button loadMore={loadMore} text='Load more' />}
+        </div>
+      );
+    };
   };
-};
+
+
