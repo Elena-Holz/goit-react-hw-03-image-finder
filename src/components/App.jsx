@@ -28,7 +28,7 @@ export class App extends Component {
     if (prevState.searchName !== searchName || prevState.page !== page) {
       this.setState({
         loading: true,
-        picturies: [],
+        
       });
     
       try {
@@ -53,6 +53,8 @@ export class App extends Component {
     onSearch = searchName => {
       this.setState({
         searchName,
+        picturies: [],
+        page: 1,
       })
     }
 
